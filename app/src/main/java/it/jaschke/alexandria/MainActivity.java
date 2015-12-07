@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +59,23 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         // Set up the drawer.
         navigationDrawerFragment.setUp(R.id.navigation_drawer,
                     (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        Bundle b = getIntent().getExtras();
+
+        if(b!=null) {
+            String myISBN = b.getString("ISBN");
+            Log.d("ISBN", myISBN);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment nextFragment=new AddBook();
+            nextFragment.setArguments(b);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, nextFragment)
+                    .addToBackStack((String) title)
+                    .commit();
+
+            //ean.setText(myISBN);
+
+        }
     }
 
     @Override
