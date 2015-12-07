@@ -92,7 +92,7 @@ public class BookService extends IntentService {
 
         bookEntry.close();
 
-//        if (Utility.isNetworkAvailable(this)) {
+        if (Utility.isNetworkAvailable(this)) {
 
 
             HttpURLConnection urlConnection = null;
@@ -203,13 +203,13 @@ public class BookService extends IntentService {
             } catch (JSONException e) {
                 Log.e(LOG_TAG, "Error ", e);
             }
-//        }
-//        else {
-//            Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
-//            messageIntent.putExtra(MainActivity.MESSAGE_KEY, getResources().getString(R.string.network_unavailable));
-//            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
-//            return;
-//        }
+        }
+        else {
+            Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
+            messageIntent.putExtra(MainActivity.MESSAGE_KEY, getResources().getString(R.string.network_unavailable));
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
+            return;
+        }
     }
 
     private void writeBackBook(String ean, String title, String subtitle, String desc, String imgUrl) {

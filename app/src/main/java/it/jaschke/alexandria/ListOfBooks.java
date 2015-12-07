@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import it.jaschke.alexandria.api.BookListAdapter;
 import it.jaschke.alexandria.api.Callback;
@@ -62,6 +63,11 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         );
 
         bookList = (ListView) rootView.findViewById(R.id.listOfBooks);
+
+        //set message if list is empty
+        View emptyView = rootView.findViewById(R.id.listview_books_empty);
+        bookList.setEmptyView(emptyView);
+
         bookList.setAdapter(bookListAdapter);
 
         bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,6 +83,12 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        restartLoader();
     }
 
     private void restartLoader(){
@@ -117,6 +129,7 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         if (position != ListView.INVALID_POSITION) {
             bookList.smoothScrollToPosition(position);
         }
+        updateEmptyView();
     }
 
     @Override
@@ -128,5 +141,21 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         activity.setTitle(R.string.books);
+    }
+
+    private void updateEmptyView() {
+        if(bookListAdapter.getCount()==0)
+        {
+            TextView tv = (TextView)getView().findViewById(R.id.listview_books_empty);
+            if(null!=tv)
+            {
+                int message = R.string.empty_book_list;
+                if(!Utility.isNetworkAvailable(getContext()))
+                {
+                    message=R.string.network_unavailable;
+                }
+                tv.setText(message);
+            }
+        }
     }
 }

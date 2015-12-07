@@ -63,8 +63,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         Bundle b = getIntent().getExtras();
 
         if(b!=null) {
-            String myISBN = b.getString("ISBN");
-            Log.d("ISBN", myISBN);
+            //String myISBN = b.getString("ISBN");
+            //Log.d("ISBN", myISBN);
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment nextFragment=new AddBook();
             nextFragment.setArguments(b);
